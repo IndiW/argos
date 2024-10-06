@@ -9,35 +9,49 @@ import {
 } from "@mui/material";
 
 function App() {
-  const [powerValue, setPowerValue] = useState(12);
+  const [powerValue, setPowerValue] = useState<number | null>(12);
 
   const [alignment, setAlignment] = useState("positive"); // Initial state as positive
 
   const computeVertexAdjusted = () => {
+    if (powerValue == null) {
+      return 0;
+    }
     let sign = 1;
     if (alignment === "negative") {
       sign = -1;
     }
+
     return (
-      Math.round(((sign * powerValue) / (1 - powerValue * 0.12 * sign)) * 100) /
-      100
+      Math.round(
+        ((sign * powerValue) / (1 - powerValue * 0.012 * sign)) * 100
+      ) / 100
     );
   };
-  const handleAlignment = (event, newAlignment) => {
+
+  const handleAlignment = (
+    _event: React.MouseEvent<HTMLElement>,
+    newAlignment: string | null
+  ) => {
     if (newAlignment !== null) {
       setAlignment(newAlignment);
     }
   };
 
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
 
     // Allow negative numbers and numbers only
-    const regex = /^\d*$/;
+    const regex = /^-?\d*\.?\d*$/;
+
+    if (inputValue === "") {
+      setPowerValue(null);
+      return;
+    }
 
     // Validate the input against the regex
-    if (regex.test(inputValue) || inputValue === "") {
-      setPowerValue(inputValue);
+    if (regex.test(inputValue)) {
+      setPowerValue(parseFloat(inputValue));
     }
   };
 
@@ -83,17 +97,18 @@ function App() {
             </ToggleButton>
           </ToggleButtonGroup>
           <TextField
+            type="number"
             label="Enter a number"
             variant="outlined"
             value={powerValue}
             onChange={handleChange}
-            inputProps={{ inputMode: "numeric", pattern: "-?[0-9]*" }}
+            inputProps={{}}
           />
         </Box>
         <Box>
           <Typography variant="h6">
             Power: {getSign()}
-            {powerValue}
+            {powerValue === null ? 0 : powerValue}
           </Typography>
           <Typography variant="h6">
             Vertex-adjusted:
