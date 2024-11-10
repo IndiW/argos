@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
+import NavBar from './components/navbar/Navbar'
 
 type EyeChartLineProps = {
   prescriptionLabel: {
@@ -22,7 +23,7 @@ function EyeChartLine(props: EyeChartLineProps) {
     LARGE: "text-4xl tracking-wider -mr-[0.6em]"
   }
 
-  const transition = { duration: 4, ease: [.25,.1,.25,1] };
+  const transition = { duration: 4, ease: [.25, .1, .25, 1] };
   const variants = {
     hidden: { filter: "blur(10px)", transform: "translateY(20%)", opacity: 0 },
     visible: { filter: "blur(0)", transform: "translateY(0)", opacity: 1 },
@@ -50,23 +51,27 @@ function EyeChartLine(props: EyeChartLineProps) {
 export default function App() {
   return (
     <div className="min-h-screen flex items-center justify-center flex-col p-4">
-      <div className='absolute top-4 flex justify-center items-center flex-col pt-0.5'>
+      <NavBar />
+      {/* <div className='absolute top-4 flex justify-center items-center flex-col pt-0.5'>
         <h1 className='font-bold text-[14px]'>
         DR.SENURI
         </h1>
         <h2 className='font-light text-[10px]'>OPTOMETRIST</h2>
-        </div>
-      <motion.div       initial="hidden"
-      whileInView="visible"
-      transition={{ staggerChildren: 0.04 }} className='flex items-center justify-center text-center flex-col gap-4 w-full md:w-6/12'>
+        </div> */}
+      <motion.div initial="hidden"
+        whileInView="visible"
+        transition={{ staggerChildren: 0.04 }} className='flex items-center justify-center text-center flex-col gap-4 w-full md:w-6/12'>
         <EyeChartLine prescriptionLabel={{ top: '20', bottom: '40' }} distanceLabel={{ top: '40 FT.', bottom: '12.2m' }} label='EYE' fontType='LARGE' />
         <EyeChartLine prescriptionLabel={{ top: '20', bottom: '30' }} distanceLabel={{ top: '30 FT.', bottom: '9.14m' }} label='CARE' fontType='MED' />
         <EyeChartLine prescriptionLabel={{ top: '20', bottom: '25' }} distanceLabel={{ top: '25 FT.', bottom: '7.62m' }} label='FOR' fontType='SMALL' />
         <EyeChartLine prescriptionLabel={{ top: '20', bottom: '20' }} distanceLabel={{ top: '20 FT.', bottom: '6.10m' }} label='YOU' fontType='XSMALL' />
+        <motion.div className='mt-10' transition={{ duration: 4, ease: [.25, .1, .25, 1] }} variants={{
+          hidden: { filter: "blur(10px)", transform: "translateY(20%)", opacity: 0 },
+          visible: { filter: "blur(0)", transform: "translateY(0)", opacity: 1 },
+        }}>
+          <Button>Book an appointment</Button>
+        </motion.div>
       </motion.div>
-      <div className='absolute bottom-4'>
-        <Button>Book an appointment</Button>
-      </div>
 
     </div>
   )
