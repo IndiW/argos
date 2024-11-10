@@ -1,123 +1,73 @@
-import { useState } from "react";
-import "./App.css";
-import {
-  Box,
-  TextField,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-} from "@mui/material";
+import { motion } from 'framer-motion'
+import { Button } from '@/components/ui/button'
 
-function App() {
-  const [powerValue, setPowerValue] = useState<number | null>(12);
+type EyeChartLineProps = {
+  prescriptionLabel: {
+    top: string,
+    bottom: string
+  },
+  distanceLabel: {
+    top: string,
+    bottom: string
+  }
+  label: string
+  fontType: 'XSMALL' | "SMALL" | "MED" | "LARGE"
+}
+function EyeChartLine(props: EyeChartLineProps) {
 
-  const [alignment, setAlignment] = useState("positive"); // Initial state as positive
+  const fontSizes: Record<typeof props.fontType, string> = {
+    XSMALL: "text-xl tracking-wider py-6 ",
+    SMALL: "text-2xl tracking-wider py-4 -mr-[0.6em]",
+    MED: "text-3xl tracking-wider py-2 -mr-[0.6em]",
+    LARGE: "text-4xl tracking-wider -mr-[0.6em]"
+  }
 
-  const computeVertexAdjusted = () => {
-    if (powerValue == null) {
-      return 0;
-    }
-    let sign = 1;
-    if (alignment === "negative") {
-      sign = -1;
-    }
-
-    return (
-      Math.round(
-        ((sign * powerValue) / (1 - powerValue * 0.012 * sign)) * 100
-      ) / 100
-    );
-  };
-
-  const handleAlignment = (
-    _event: React.MouseEvent<HTMLElement>,
-    newAlignment: string | null
-  ) => {
-    if (newAlignment !== null) {
-      setAlignment(newAlignment);
-    }
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = event.target.value;
-
-    // Allow negative numbers and numbers only
-    const regex = /^-?\d*\.?\d*$/;
-
-    if (inputValue === "") {
-      setPowerValue(null);
-      return;
-    }
-
-    // Validate the input against the regex
-    if (regex.test(inputValue)) {
-      setPowerValue(parseFloat(inputValue));
-    }
-  };
-
-  const getSign = () => {
-    return alignment === "positive" ? "+" : "-";
+  const transition = { duration: 4, ease: [.25,.1,.25,1] };
+  const variants = {
+    hidden: { filter: "blur(10px)", transform: "translateY(20%)", opacity: 0 },
+    visible: { filter: "blur(0)", transform: "translateY(0)", opacity: 1 },
   };
 
   return (
-    <>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-          gap: "10px",
-        }}
-      >
-        <Typography variant="h4">Vertex Adjustment Calculator</Typography>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "5px",
-          }}
-        >
-          <ToggleButtonGroup
-            value={alignment}
-            exclusive
-            onChange={handleAlignment}
-            aria-label="positive-negative-toggle"
-            color="primary"
-            size="large"
-          >
-            <ToggleButton value="positive" aria-label="positive">
-              +
-            </ToggleButton>
-            <ToggleButton value="negative" aria-label="negative">
-              -
-            </ToggleButton>
-          </ToggleButtonGroup>
-          <TextField
-            type="number"
-            label="Enter a number"
-            variant="outlined"
-            value={powerValue}
-            onChange={handleChange}
-            inputProps={{}}
-          />
-        </Box>
-        <Box>
-          <Typography variant="h6">
-            Power: {getSign()}
-            {powerValue === null ? 0 : powerValue}
-          </Typography>
-          <Typography variant="h6">
-            Vertex-adjusted:
-            {computeVertexAdjusted()}
-          </Typography>
-        </Box>
-      </Box>
-    </>
-  );
+    <motion.div className='flex justify-between items-center text-center flex-row w-full' transition={transition} variants={variants}>
+      <div>
+        <p className='text-xs'>{props.prescriptionLabel.top}</p>
+        <hr className='bg-gray-950 h-0.5 w-full' />
+        <p className='text-xs'>{props.prescriptionLabel.bottom}</p>
+      </div>
+      <div>
+        <h1 className={`${fontSizes[props.fontType]} font-bold -mr-[0.6em]`}>{props.label}</h1>
+      </div>
+      <div>
+        <p className='text-xs'>{props.distanceLabel.top}</p>
+        <hr className='bg-gray-950 h-0.5 w-full' />
+        <p className='text-xs'>{props.distanceLabel.bottom}</p>
+      </div>
+    </motion.div>
+  )
 }
 
-export default App;
+export default function App() {
+  return (
+    <div className="min-h-screen flex items-center justify-center flex-col p-4">
+      <div className='absolute top-4 flex justify-center items-center flex-col pt-0.5'>
+        <h1 className='font-bold text-[14px]'>
+        DR.SENURI
+        </h1>
+        <h2 className='font-light text-[10px]'>OPTOMETRIST</h2>
+        </div>
+      <motion.div       initial="hidden"
+      whileInView="visible"
+      transition={{ staggerChildren: 0.04 }} className='flex items-center justify-center text-center flex-col gap-4 w-full md:w-6/12'>
+        <EyeChartLine prescriptionLabel={{ top: '20', bottom: '40' }} distanceLabel={{ top: '40 FT.', bottom: '12.2m' }} label='EYE' fontType='LARGE' />
+        <EyeChartLine prescriptionLabel={{ top: '20', bottom: '30' }} distanceLabel={{ top: '30 FT.', bottom: '9.14m' }} label='CARE' fontType='MED' />
+        <EyeChartLine prescriptionLabel={{ top: '20', bottom: '25' }} distanceLabel={{ top: '25 FT.', bottom: '7.62m' }} label='FOR' fontType='SMALL' />
+        <EyeChartLine prescriptionLabel={{ top: '20', bottom: '20' }} distanceLabel={{ top: '20 FT.', bottom: '6.10m' }} label='YOU' fontType='XSMALL' />
+      </motion.div>
+      <div className='absolute bottom-4'>
+        <Button>Book an appointment</Button>
+      </div>
+
+    </div>
+  )
+}
