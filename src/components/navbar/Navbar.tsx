@@ -50,7 +50,7 @@ export default function NavBar() {
                 <SheetContent side="left">
                     {LOGO}
                     <div className="grid gap-2 py-6">
-                        {TABS.map((tab) => <a href={tab.route} className="flex w-full items-center py-2 text-lg font-semibold" >
+                        {TABS.map((tab) => <a href={tab.route} className="flex w-full items-center py-2 text-lg font-semibold" key={tab.label + "desktop"}>
                             {tab.label}
                         </a>)}
                     </div>
@@ -58,7 +58,7 @@ export default function NavBar() {
             </Sheet>
             {LOGO}
             <nav className="ml-auto hidden lg:flex gap-6">
-                {TABS.map((tab) => <a href={tab.route} className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50 dark:data-[active]:bg-gray-800/50 dark:data-[state=open]:bg-gray-800/50"
+                {TABS.map((tab) => <a key={tab.label + "mobile"} href={tab.route} className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50 dark:data-[active]:bg-gray-800/50 dark:data-[state=open]:bg-gray-800/50"
                 >
                     {tab.label}
                 </a>)}
@@ -105,8 +105,8 @@ function GlassesIcon(props: GlassesIconProps) {
             strokeLinejoin="round"
             strokeWidth={2}
             viewBox="0 0 24 24"
-            height="0.5em"
-            width="0.6em"
+            height="1.5em"
+            width="1.5em"
             {...props}
         >
             <path d="M10 15 A4 4 0 0 1 6 19 A4 4 0 0 1 2 15 A4 4 0 0 1 10 15 z" />

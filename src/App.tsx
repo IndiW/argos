@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import NavBar from './components/navbar/Navbar'
+import AboutPage from './pages/AboutPage'
 
 type EyeChartLineProps = {
   prescriptionLabel: {
@@ -50,7 +51,7 @@ function EyeChartLine(props: EyeChartLineProps) {
 
 export default function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center flex-col p-4">
+    <div className="flex items-center justify-center flex-col">
       <NavBar />
       {/* <div className='absolute top-4 flex justify-center items-center flex-col pt-0.5'>
         <h1 className='font-bold text-[14px]'>
@@ -60,7 +61,7 @@ export default function App() {
         </div> */}
       <motion.div initial="hidden"
         whileInView="visible"
-        transition={{ staggerChildren: 0.04 }} className='flex items-center justify-center text-center flex-col gap-4 w-full md:w-6/12'>
+        transition={{ staggerChildren: 0.04 }} className='flex items-center justify-center text-center flex-col gap-4 w-full md:w-6/12 min-h-screen'>
         <EyeChartLine prescriptionLabel={{ top: '20', bottom: '40' }} distanceLabel={{ top: '40 FT.', bottom: '12.2m' }} label='EYE' fontType='LARGE' />
         <EyeChartLine prescriptionLabel={{ top: '20', bottom: '30' }} distanceLabel={{ top: '30 FT.', bottom: '9.14m' }} label='CARE' fontType='MED' />
         <EyeChartLine prescriptionLabel={{ top: '20', bottom: '25' }} distanceLabel={{ top: '25 FT.', bottom: '7.62m' }} label='FOR' fontType='SMALL' />
@@ -72,6 +73,7 @@ export default function App() {
           <Button>Book an appointment</Button>
         </motion.div>
       </motion.div>
+      <AboutPage />
 
     </div>
   )
